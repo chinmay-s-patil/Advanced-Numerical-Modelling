@@ -1,0 +1,62 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      SWEDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// CASE 1: Wind blowing from the East (westward), 10 m/s, for 1000 time steps.
+//         All physics active: Coriolis + friction + wind stress.
+
+// Time integration scheme: euler | rk4 | cn
+type            rk4;
+
+//  Physical parameters 
+
+// Coriolis parameter [s^-1]  at 60 N:  f = 2 * 7.2921e-5 * sin(60) = 1.2585e-4
+f               1.2585e-4;
+
+// Bottom friction coefficient (dimensionless)
+r               0.003;
+
+// Wind stress scaling factor lambda = 3.2e-6
+lambda          3.2e-6;
+
+//  Source (wind) subdict 
+//
+// Wind blowing FROM the East means air moves in the -x direction (West).
+// In oceanography "wind from East" drives surface westward.
+// Alternatively: wind blowing TOWARDS East = +x direction.
+// Here we use:
+//   "Eastward wind"  = wind blowing in +x direction  = (1 0 0)
+//   "Wind from East" = wind blowing in -x direction  = (-1 0 0)
+//
+// Direction conventions (unit vector, will be normalised):
+//   Eastward  (blowing East)  -> (1  0  0)
+//   Northward (blowing North) -> (0  1  0)
+//   Westward  (blowing West)  -> (-1 0  0)
+//   Southward (blowing South) -> (0 -1  0)
+//
+// "Wind blowing from the East" -> stress pushes water Westward -> (-1 0 0)
+// Change to (1 0 0) if you want stress pushing water Eastward.
+
+source
+{
+    speed           10;          // [m/s]
+    direction       (-1 0 0);   // Wind FROM the East -> stress pushes West
+
+    // Active for the entire 1000-step run.
+    // With adaptive deltaT the physical end time is not fixed,
+    // so use a large number to keep wind always on.
+    duration        (0 1e9);     // [s]  always active
+}
+
+// ************************************************************************* //

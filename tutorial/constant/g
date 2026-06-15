@@ -1,2 +1,22 @@
-g       9.81;
-direction (0 -1 0); 
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       uniformDimensionedVectorField;
+    location    "constant";
+    object      g;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// For 2-D SWE the solver only uses mag(g) = 9.81 m/s^2.
+// Direction is set to -z (out of the 2-D plane) as a convention.
+
+dimensions      [0 1 -2 0 0 0 0];
+
+value           (0 0 -9.81);
+
+// ************************************************************************* //

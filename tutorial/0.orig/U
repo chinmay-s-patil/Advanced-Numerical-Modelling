@@ -2,8 +2,6 @@
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
 |  \\    /   O peration     | Version:  v2412                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -12,35 +10,21 @@ FoamFile
     class       volVectorField;
     object      U;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [0 1 -1 0 0 0 0];
 
-// Domain starts at rest (body frame, ball stationary, fluid at rest)
-internalField   uniform (0 0 0);
+internalField   uniform (0 0 0);   // lake starts at rest
 
 boundaryField
 {
-    front           { type empty; }
-    back            { type empty; }
-
-    // Top and bottom: fluid streams past the stationary ball.
-    // fallingFrameInletVelocity reads u0/acceleration from fallingFrameDict
-    // and imposes U = -(u0 + a*t) automatically.
-    top    { type fallingInletVelocity; value uniform (0 0 0); }
-    bottom { type fallingInletVelocity; value uniform (0 0 0); }
-
-    // Side wall: slip (no radial influence at far field)
-    farWall
-    {			
-        type pressureInletOutletVelocity;
-        value uniform (0 0 0);
-    }
-
-    // Sphere: no-slip wall (ball is stationary in body-fixed frame)
-    cylinder          { type noSlip; }
-	
-	symmetry		{ type symmetry; }
+    // Closed lake — no-normal-flow walls
+    west   { type slip; }
+    east   { type slip; }
+    south  { type slip; }
+    north  { type slip; }
+    front  { type empty; }
+    back   { type empty; }
 }
 
 // ************************************************************************* //

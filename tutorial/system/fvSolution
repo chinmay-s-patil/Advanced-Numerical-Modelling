@@ -14,73 +14,27 @@ FoamFile
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// The SWE solver is fully explicit (RK4 / CN / Euler).
+// OpenFOAM requires solver entries for any field solved with fvm::ddt
+// (used in eulerStep for h and hU).
 
 solvers
 {
-    p
+    h
     {
-        solver          GAMG;
-        smoother        GaussSeidel;
-        tolerance       1e-6;
-        relTol          0.05;
-    }
-
-    pFinal
-    {
-        $p;
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-8;
         relTol          0;
     }
 
-    U
+    hU
     {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
+        solver          PBiCGStab;
+        preconditioner  DILU;
         tolerance       1e-8;
-        relTol          0.1;
-    }
-
-    UFinal
-    {
-        $U;
         relTol          0;
-    }
-
-    // WALE only needs nut (algebraic — no transport equation to solve)
-    // but OpenFOAM still needs a solver entry for any field it writes
-    nut
-    {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
-        tolerance       1e-8;
-        relTol          0.1;
-    }
-}
-
-PIMPLE
-{
-    momentumPredictor   yes;
-
-    // LES typically needs only 1 outer corrector — it's genuinely transient
-    // 2 outer correctors is fine but costly; drop to 1 if runtime is painful
-    nOuterCorrectors    2;
-    nCorrectors         2;
-    nNonOrthogonalCorrectors 1;
-
-    correctPhi          no;
-    checkMeshCourantNo  no;
-    moveMeshOuterCorrectors no;
-}
-
-relaxationFactors
-{
-    // No equation relaxation for LES — it kills temporal accuracy
-    // p relaxation is acceptable and helps stability
-    fields
-    {
-    }
-    equations
-    {
-        UFinal          1.0;
     }
 }
 

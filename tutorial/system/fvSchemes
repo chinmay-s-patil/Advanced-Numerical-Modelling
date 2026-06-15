@@ -14,29 +14,26 @@ FoamFile
     object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// Explicit shallow water solver — Euler / RK4 / CN all bypass fvm::ddt
+// (the Euler step uses fvm::ddt but with explicit coefficients only).
+// Linear central schemes are appropriate for smooth lake dynamics.
 
 ddtSchemes
 {
-    // backward is 2nd-order in time — important for LES
-    default         backward;
+    default         Euler;      // used only in eulerStep; rk4/cn are fully explicit
 }
 
 gradSchemes
 {
-    default             Gauss linear;
-    grad(U)             cellLimited Gauss linear 1;
+    default         Gauss linear;
 }
 
 divSchemes
 {
     default             none;
-
-    // LUST: 75% linear (central) + 25% linearUpwind — standard LES compromise
-    // gives low numerical dissipation while staying bounded
-    div(phi,U)          Gauss LUST grad(U);
-
-    // SGS stress divergence
-    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+    div(phi,U)          Gauss linearUpwind grad(U);   // upwind for momentum flux
+    div(-phi)           Gauss linear;
 }
 
 laplacianSchemes

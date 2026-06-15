@@ -7,5 +7,5 @@ scalar maxCo
 
 scalar maxDeltaT
 (
-    timeControls.lookupOrDefault<scalar>("maxDeltaT", great)
+    timeControls.lookupOrDefault<scalar>("maxDeltaT", GREAT)
 );

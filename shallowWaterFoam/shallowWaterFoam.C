@@ -46,24 +46,8 @@ int main(int argc, char *argv[])
 
     Info<< "\nStarting time loop\n" << endl;
 
-    if (type == "euler")
-    {
-        Info << "Euler method selected" << endl;
-    }
-
-    else if (type == "rk4")
-    {
-        Info << "Runge Kutta of 4th Order method selected" << endl;
-
-        #include "createRK4Fields.H"
-    }
-
-    else if (type == "cn")
-    {
-        Info << "Explicit Crank Nicolson method selected" << endl;
-
-        #include "createCNFields.H"
-    }
+    #include "createRK4Fields.H"    
+    // #include "createCNFields.H"
 
     while (runTime.run())
     {
@@ -75,18 +59,24 @@ int main(int argc, char *argv[])
 
         if (type == "euler")
         {
+            Info << "Euler method selected" << endl;
+
             #include "eulerStep.H"
         }
 
         else if (type == "rk4")
         {
+            Info << "Runge Kutta of 4th Order method selected" << endl;
+
             #include "rk4Step.H"
         }
 
-        else if (type == "cn")
-        {
-            #include "cnStep.H"
-        }
+        // else if (type == "cn")
+        // {
+        //     Info << "Explicit Crank Nicolson method selected" << endl;
+
+        //     #include "cnStep.H"
+        // }
 
         runTime.write();
 

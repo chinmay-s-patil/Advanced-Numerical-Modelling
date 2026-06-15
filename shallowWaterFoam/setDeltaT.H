@@ -14,7 +14,7 @@
 
     scalar deltaT = min
     (
-        maxCo*runTime.deltaTValue()/max(CoNum, small),
+        maxCo*runTime.deltaTValue()/max(CoNum, SMALL),
         maxDeltaT
     );
 

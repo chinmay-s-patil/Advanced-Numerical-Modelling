@@ -66,7 +66,9 @@ hU0 = hU;
 //  Stage 2 
 h  = h0  + (runTime.deltaT()/2)*k1_h;
 hU = hU0 + (runTime.deltaT()/2)*k1_hU;
-U  = hU/h;
+h  = max(h,  dimensionedScalar("hMin", dimLength, 1e-3));
+hU = hU * pos(h - dimensionedScalar("hMin", dimLength, 1e-3));
+U  = hU / h;
 {
     surfaceScalarField phi2(fvc::interpolate(hU) & mesh.Sf());
 
@@ -80,7 +82,9 @@ U  = hU/h;
 //  Stage 3 
 h  = h0  + (runTime.deltaT()/2)*k2_h;
 hU = hU0 + (runTime.deltaT()/2)*k2_hU;
-U  = hU/h;
+h  = max(h,  dimensionedScalar("hMin", dimLength, 1e-3));
+hU = hU * pos(h - dimensionedScalar("hMin", dimLength, 1e-3));
+U  = hU / h;
 {
     surfaceScalarField phi3(fvc::interpolate(hU) & mesh.Sf());
 
@@ -94,7 +98,9 @@ U  = hU/h;
 //  Stage 4 
 h  = h0  + runTime.deltaT()*k3_h;
 hU = hU0 + runTime.deltaT()*k3_hU;
-U  = hU/h;
+h  = max(h,  dimensionedScalar("hMin", dimLength, 1e-3));
+hU = hU * pos(h - dimensionedScalar("hMin", dimLength, 1e-3));
+U  = hU / h;
 {
     surfaceScalarField phi4(fvc::interpolate(hU) & mesh.Sf());
 
@@ -109,4 +115,7 @@ U  = hU/h;
 h  = h0  + (runTime.deltaT()/6)*(k1_h  + 2*k2_h  + 2*k3_h  + k4_h);
 hU = hU0 + (runTime.deltaT()/6)*(k1_hU + 2*k2_hU + 2*k3_hU + k4_hU);
 
-U = hU/h;
+// Prevent negative depths
+h  = max(h,  dimensionedScalar("hMin", dimLength, 1e-3));
+hU = hU * pos(h - dimensionedScalar("hMin", dimLength, 1e-3));
+U  = hU / h;

@@ -21,12 +21,12 @@ startFrom       latestTime;
 startTime       0;
 
 stopAt          endTime;
-endTime         86400;          // 24 hours [s]  — matches wind duration window
+endTime         1000;          // 24 hours [s]  — matches wind duration window
 
-deltaT          10;             // initial time step [s]; adjusted by CFL control
+deltaT          1;             // initial time step [s]; adjusted by CFL control
 
 writeControl    adjustableRunTime;
-writeInterval   3600;           // write every hour (24 snapshots)
+writeInterval   1;           // write every hour (24 snapshots)
 
 purgeWrite      0;
 

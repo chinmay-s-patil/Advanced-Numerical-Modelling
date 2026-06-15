@@ -32,8 +32,10 @@ gradSchemes
 divSchemes
 {
     default             none;
-    div(phi,U)          Gauss linearUpwind grad(U);   // upwind for momentum flux
-    div(-phi)           Gauss linear;
+    div(phi,U)                          Gauss linearUpwind grad(U);
+    div((interpolate(hU)&S),U)          Gauss linearUpwind grad(U);
+    div(-phi)                           Gauss linear;
+    div(-(interpolate(hU)&S))           Gauss linear;
 }
 
 laplacianSchemes

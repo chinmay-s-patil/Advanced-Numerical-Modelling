@@ -1,7 +1,7 @@
 {
     surfaceScalarField amaxSf
     (
-        fvc::interpolate(mag(U) + sqrt(magg*h))*mesh.magSf()
+        fvc::interpolate(mag(U) + sqrt(magg*max(h, dimensionedScalar("hMin", dimLength, 1e-6))))*mesh.magSf()
     );
 
     scalarField sumAmaxSf

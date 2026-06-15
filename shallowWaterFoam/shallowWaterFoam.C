@@ -59,15 +59,11 @@ int main(int argc, char *argv[])
 
         if (type == "euler")
         {
-            Info << "Euler method selected" << endl;
-
             #include "eulerStep.H"
         }
 
         else if (type == "rk4")
         {
-            Info << "Runge Kutta of 4th Order method selected" << endl;
-
             #include "rk4Step.H"
         }
 

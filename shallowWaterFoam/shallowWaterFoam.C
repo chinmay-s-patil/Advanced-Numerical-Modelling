@@ -38,11 +38,62 @@ int main(int argc, char *argv[])
 {
     #include "setRootCase.H"
     #include "createTime.H"
+    #include "createMesh.H"
+    #include "createFields.H"
+    #include "readTimeControls.H"
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    Info<< nl;
-    runTime.printExecutionTime(Info);
+    Info<< "\nStarting time loop\n" << endl;
+
+    if (type == "euler")
+    {
+        Info << "Euler method selected" << endl;
+    }
+
+    else if (type == "rk4")
+    {
+        Info << "Runge Kutta of 4th Order method selected" << endl;
+
+        #include "createRK4Fields.H"
+    }
+
+    else if (type == "cn")
+    {
+        Info << "Explicit Crank Nicolson method selected" << endl;
+
+        #include "createCNFields.H"
+    }
+
+    while (runTime.run())
+    {
+        #include "setDeltaT.H"
+
+        runTime ++;
+
+        Info<< "Time = " << runTime.timeName() << nl << endl;
+
+        if (type == "euler")
+        {
+            #include "eulerStep.H"
+        }
+
+        else if (type == "rk4")
+        {
+            #include "rk4Step.H"
+        }
+
+        else if (type == "cn")
+        {
+            #include "cnStep.H"
+        }
+
+        runTime.write();
+
+        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+            << nl << endl;
+    }
 
     Info<< "End\n" << endl;
 

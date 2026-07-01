@@ -1,3 +1,28 @@
+# Build artifacts 
+shallowWaterFoamSimple/
+
+# Documentation/planning 
 plan.md
 
-shallowWaterFoamSimple/*
+# Text files (if needed) 
+*.txt
+
+# OpenFOAM runtime directories 
+0/
+[1-9]*/
+[1-9]*.[0-9]*/
+processor*/
+dynamicCode/
+
+# OpenFOAM fields (ignore at root level only) 
+# /H
+# /qFlux
+# /zeta
+# /uniform/
+
+# EXCEPTION: Keep original initial conditions 
+!0.orig/
+!0.orig/**
+
+# 
+!*topo*

@@ -1,0 +1,75 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+	version     2.0;
+	format      ascii;
+	class       dictionary;
+	location    "constant";
+	object      SWEDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Time integration scheme: euler | rk4 | cn
+type            rk4;
+
+// Gravitational acceleration magnitude is read from constant/g
+
+// ---------------------------------------------------------------------------
+// Physical parameters
+// ---------------------------------------------------------------------------
+
+// Coriolis parameter [s^-1]
+// f = 2 * 7.2921e-5 * sin(60 deg) = 1.2585e-4  (default, 60 N)
+f               1.2585e-4;
+
+// Bottom friction coefficient (dimensionless)
+r               0.003;
+
+// Wind stress factor  lambda = 3.2e-6
+lambda          3.2e-6;
+
+// ---------------------------------------------------------------------------
+// Wind / source subdict
+// ---------------------------------------------------------------------------
+source
+{
+	easterly
+	{
+		// Wind speed [m/s]
+		speed           10;
+
+		// Wind direction as a vector (will be normalised automatically)
+		//   East  -> (1  0  0)
+		//   North -> (0  1  0)
+		//   West  -> (-1 0  0)
+		//   South -> (0 -1  0)
+		direction       (1 0 0);   // East
+
+		// Time window during which wind is active [s]: (tStart tEnd)
+		// Use (0 1e9) to keep wind on for the entire run.
+		duration        (0 3000); // 0 to 24 hours
+	}
+	
+	northerly
+	{
+		// Wind speed [m/s]
+		speed           5;
+
+		// Wind direction as a vector (will be normalised automatically)
+		//   East  -> (1  0  0)
+		//   North -> (0  1  0)
+		//   West  -> (-1 0  0)
+		//   South -> (0 -1  0)
+		direction       (1 0 0);   // East
+
+		// Time window during which wind is active [s]: (tStart tEnd)
+		// Use (0 1e9) to keep wind on for the entire run.
+		duration        (0 3000); // 0 to 24 hours
+	}
+}
+
+// ************************************************************************* //

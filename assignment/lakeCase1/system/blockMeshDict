@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//
+// Domain  : 10 km (x = East) x 10 km (y = North), 2-D (1 cell in z)
+// Grid    : 20 cols x 40 rows  ->  dx = 500 m, dy = 250 m
+// Topo    : 40 rows x 20 cols, read into H (max depth = 40 m)
+//
+// Coordinate system:
+//   x  = East  (0 -> 10000 m)
+//   y  = North (0 -> 10000 m)
+//   z  = dummy 2-D direction, front/back = empty
+
+scale   1;
+
+vertices
+(
+    (     0      0  -1 )   // 0
+    ( 10000      0  -1 )   // 1
+    ( 10000  10000  -1 )   // 2
+    (     0  10000  -1 )   // 3
+    (     0      0   1 )   // 4
+    ( 10000      0   1 )   // 5
+    ( 10000  10000   1 )   // 6
+    (     0  10000   1 )   // 7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (20 40 1) simpleGrading (1 1 1)
+);
+
+boundary
+(
+    west
+    {
+        type wall;
+        faces ( (0 4 7 3) );
+    }
+    east
+    {
+        type wall;
+        faces ( (1 2 6 5) );
+    }
+    south
+    {
+        type wall;
+        faces ( (0 1 5 4) );
+    }
+    north
+    {
+        type wall;
+        faces ( (3 7 6 2) );
+    }
+    front
+    {
+        type empty;
+        faces ( (4 5 6 7) );
+    }
+    back
+    {
+        type empty;
+        faces ( (0 3 2 1) );
+    }
+);
+
+// ************************************************************************* //

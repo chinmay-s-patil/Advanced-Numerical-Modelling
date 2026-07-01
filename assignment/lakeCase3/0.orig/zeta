@@ -1,0 +1,32 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      zeta;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// zeta = free-surface height perturbation [m]
+// Starts at zero everywhere (flat free surface).
+
+dimensions      [0 1 0 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    west   { type zeroGradient; }
+    east   { type zeroGradient; }
+    south  { type zeroGradient; }
+    north  { type zeroGradient; }
+    front  { type empty; }
+    back   { type empty; }
+}
+
+// ************************************************************************* //

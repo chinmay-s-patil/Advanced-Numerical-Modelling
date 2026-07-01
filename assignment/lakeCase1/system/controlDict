@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     shallowWaterFoam;
+
+startFrom       startTime;
+startTime       0;
+
+stopAt          endTime;
+endTime         60000;       // 1000 time steps
+
+deltaT          1;          // Each "time unit" = 1 time step
+
+writeControl    timeStep;
+writeInterval   10;         // Write every 10 time steps
+
+purgeWrite      0;
+
+writeFormat     ascii;
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+timePrecision   6;
+
+runTimeModifiable true;
+
+// Enable automatic time-step adjustment based on CFL
+adjustTimeStep  yes;
+maxCo           0.5;
+maxDeltaT       70;         // Max 1-minute time step
+
+// ************************************************************************* //

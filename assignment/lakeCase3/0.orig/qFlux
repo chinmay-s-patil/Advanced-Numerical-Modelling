@@ -1,0 +1,33 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0";
+    object      qFlux;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// qFlux = depth-integrated transport (U, V, 0)  [m^2/s]
+// Starts at zero everywhere (lake at rest).
+
+dimensions      [0 2 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    // Closed lake -- no-normal-flow walls
+    west   { type slip; }
+    east   { type slip; }
+    south  { type slip; }
+    north  { type slip; }
+    front  { type empty; }
+    back   { type empty; }
+}
+
+// ************************************************************************* //
